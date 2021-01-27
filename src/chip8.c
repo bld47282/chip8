@@ -316,13 +316,11 @@ void execute(chip8 *ch8) {
 		case 0xE000:
 			switch(check_final_and_penultimate) {
 				case 0x00A1:
-					if (ch8->keypad[x] == 0)
-						ch8->pc += 2;
+					printf("Instruction not implemented: %x\n", ch8->opcode);
 					break;
 
 				case 0x009E:
-					if (ch8->keypad[x] != 0)
-						ch8->pc += 2;
+					printf("Instruction not implemented: %x\n", ch8->opcode);
 					break;
 
 				default:
