@@ -8,6 +8,7 @@
 #define FONT_START_ADDRESS 0x50
 #define SCREEN_WIDTH 64
 #define SCREEN_HEIGHT 32
+#define NUM_KEYS 0x10
 
 unsigned char fontset[FONT_SIZE] = {
 	0xF0, 0x90, 0x90, 0x90, 0xF0, // 0
@@ -41,7 +42,7 @@ typedef struct {
 	unsigned char sound_timer;
 
 	unsigned char graphics_buffer[SCREEN_WIDTH][SCREEN_HEIGHT];
-	unsigned char keypad[0xF];
+	unsigned char keypad[NUM_KEYS];
 	unsigned char draw_flag;
 } chip8;
 
