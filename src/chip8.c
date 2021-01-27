@@ -3,7 +3,7 @@
 #define MEMORY_SIZE 0xFFF
 #define MEMORY_BUFFER 0x200
 #define N_REGISTERS 0x10
-#define STACK_DEPTH 0xF
+#define STACK_DEPTH 0x10
 #define FONT_SIZE 80
 #define FONT_START_ADDRESS 0x50
 #define SCREEN_WIDTH 64
