@@ -41,3 +41,9 @@ void draw(chip8 * ch8, SDL_Handler handler) {
 	SDL_RenderPresent(handler.renderer);
 	ch8->draw_flag = 0;
 }
+
+void destroy_handler(SDL_Handler handler) {
+	SDL_DestroyRenderer(handler.renderer);
+	SDL_DestroyWindow(handler.window);
+	SDL_Quit();
+}

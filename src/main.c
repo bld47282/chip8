@@ -11,6 +11,8 @@
 int main(int argc, char *argv[]) {
 	char *filename;
 	chip8 ch8;
+	SDL_Handler handler = initialise_window();
+	SDL_Event event;
 
 	if (argc != 2) {
 		printf("Usage: chip8 [filename]\n");
@@ -24,8 +26,6 @@ int main(int argc, char *argv[]) {
 
 	load_rom(&ch8, filename);
 
-	SDL_Handler handler = initialise_window();
-
 
 	while (1) {
 		cycle(&ch8);
@@ -33,13 +33,11 @@ int main(int argc, char *argv[]) {
 		if (ch8.draw_flag == 1)
 			draw(&ch8, handler);
 
-		get_key_state(&ch8);
+		get_key_state(&ch8, event);
 
 		SDL_Delay(2);
 	}
-
-	SDL_DestroyRenderer(handler.renderer);
-	SDL_DestroyWindow(handler.window);
-	SDL_Quit();
+	
+	destroy_handler(handler);
 	return 0;
 }
