@@ -41,7 +41,7 @@ typedef struct {
 	unsigned char delay_timer;
 	unsigned char sound_timer;
 
-	unsigned char graphics_buffer[SCREEN_WIDTH][SCREEN_HEIGHT];
+	unsigned int graphics_buffer[SCREEN_WIDTH][SCREEN_HEIGHT];
 	unsigned char keypad[NUM_KEYS];
 	unsigned char draw_flag;
 } chip8;
@@ -198,10 +198,10 @@ void execute(chip8 *ch8) {
 				screen_byte = ch8->mem[ch8->i + row];
         			for (int col = 0; col < 8; col++) {
             				if ((screen_byte & (0x80 >> col)) != 0) {
-                				if (ch8->graphics_buffer[vx + col][vy + row] == 1) {
+                				if (ch8->graphics_buffer[vx + col][vy + row] == 0xFFFFFFFF) {
                     					ch8->v[0xF] = 1;
                 				}		
-                				ch8->graphics_buffer[vx + col][vy + row] ^= 1;
+                				ch8->graphics_buffer[vx + col][vy + row] ^= 0xFFFFFFFF;
             				}
         			}
     			}

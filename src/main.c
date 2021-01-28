@@ -24,37 +24,22 @@ int main(int argc, char *argv[]) {
 
 	load_rom(&ch8, filename);
 
-	// SDL Initialisation
+	SDL_Handler handler = initialise_window();
 
-	SDL_Window * window = NULL;
-	SDL_Surface* screen = NULL;
-	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
-		printf("SDL error: %s\n", SDL_GetError());
-	} else {
-		window = SDL_CreateWindow("Chip8", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 
-				SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
-	}
-	if (window == NULL) {
-		printf("Window not created: %s\n", SDL_GetError());
-	} else {
-		screen = SDL_GetWindowSurface(window);
-		SDL_FillRect(screen, NULL, SDL_MapRGB(screen->format, 0xFF, 0xFF, 0xFF));
-		SDL_UpdateWindowSurface(window);
-		SDL_Delay(2000);
-	}
-	
-	// Main loop
-	
+
 	while (1) {
 		cycle(&ch8);
 
 		if (ch8.draw_flag == 1)
-			draw(&ch8);
+			draw(&ch8, handler);
 
 		get_key_state(&ch8);
+
+		SDL_Delay(2);
 	}
 
-	SDL_DestroyWindow(window);
+	SDL_DestroyRenderer(handler.renderer);
+	SDL_DestroyWindow(handler.window);
 	SDL_Quit();
 	return 0;
 }
