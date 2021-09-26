@@ -183,7 +183,7 @@ void execute(chip8 *ch8) {
 		case 0xC000:
 			// RND Vx, byte
 			// Set Vx = random byte && kk
-			ch8->v[x] = kk + (rand() % 256);
+			ch8->v[x] = kk & (rand() % 256);
 			break;
 
 		case 0xD000: ;
@@ -372,8 +372,8 @@ void execute(chip8 *ch8) {
 
 				case 0x0033:
 					ch8->mem[ch8->i+2] = (ch8->v[x] % 10);
-					ch8->mem[ch8->i+1] = ((ch8->v[x] % 10) % 10);
-					ch8->mem[ch8->i] = (((ch8->v[x] % 10) % 10) % 10);
+					ch8->mem[ch8->i+1] = ((ch8->v[x] / 10) % 10);
+					ch8->mem[ch8->i] = (((ch8->v[x] / 10) / 10) % 10);
 					break;
 
 				case 0x0055:
