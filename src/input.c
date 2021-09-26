@@ -1,5 +1,4 @@
 void get_key_state(chip8 *ch8, SDL_Event event) {
-	memset(ch8->keypad, 0, sizeof(ch8->keypad));
 	while (SDL_PollEvent(&event)) {
 		switch (event.type) {
 			case SDL_KEYDOWN:
@@ -14,7 +13,7 @@ void get_key_state(chip8 *ch8, SDL_Event event) {
 						ch8->keypad[0x3] = 0xFF;
 						break;
 					case SDL_SCANCODE_4:
-						ch8->keypad[0x0] = 0xFF;
+						ch8->keypad[0xC] = 0xFF;
 						break;
 					case SDL_SCANCODE_Q:
 						ch8->keypad[0x4] = 0xFF;
@@ -66,7 +65,7 @@ void get_key_state(chip8 *ch8, SDL_Event event) {
 						ch8->keypad[0x3] = 0x00;
 						break;
 					case SDL_SCANCODE_4:
-						ch8->keypad[0x0] = 0x00;
+						ch8->keypad[0xC] = 0x00;
 						break;
 					case SDL_SCANCODE_Q:
 						ch8->keypad[0x4] = 0x00;
