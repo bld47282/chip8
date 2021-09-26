@@ -41,7 +41,7 @@ typedef struct {
 	unsigned char delay_timer;
 	unsigned char sound_timer;
 
-	unsigned char graphics_buffer[SCREEN_WIDTH][SCREEN_HEIGHT];
+	unsigned int graphics_buffer[SCREEN_WIDTH][SCREEN_HEIGHT];
 	unsigned char keypad[NUM_KEYS];
 	unsigned char draw_flag;
 } chip8;
@@ -55,6 +55,7 @@ void initialise(chip8 *ch8) {
 	memset(ch8->mem, 0, sizeof(ch8->mem));
 	memset(ch8->stack, 0, sizeof(ch8->stack));
 	memset(ch8->v, 0, sizeof(ch8->v));
+	memset(ch8->keypad, 0, sizeof(ch8->keypad));
 
 	ch8->i = 0;
 	ch8->sp = 0;
@@ -182,7 +183,7 @@ void execute(chip8 *ch8) {
 		case 0xC000:
 			// RND Vx, byte
 			// Set Vx = random byte && kk
-			ch8->v[x] = kk + (rand() % 256);
+			ch8->v[x] = kk & (rand() % 256);
 			break;
 
 		case 0xD000: ;
@@ -198,10 +199,10 @@ void execute(chip8 *ch8) {
 				screen_byte = ch8->mem[ch8->i + row];
         			for (int col = 0; col < 8; col++) {
             				if ((screen_byte & (0x80 >> col)) != 0) {
-                				if (ch8->graphics_buffer[vx + col][vy + row] == 1) {
+                				if (ch8->graphics_buffer[vx + col][vy + row] == 0xFFFFFFFF) {
                     					ch8->v[0xF] = 1;
                 				}		
-                				ch8->graphics_buffer[vx + col][vy + row] ^= 1;
+                				ch8->graphics_buffer[vx + col][vy + row] ^= 0xFFFFFFFF;
             				}
         			}
     			}
@@ -316,11 +317,19 @@ void execute(chip8 *ch8) {
 		case 0xE000:
 			switch(check_final_and_penultimate) {
 				case 0x00A1:
-					printf("Instruction not implemented: %x\n", ch8->opcode);
+					// SKNP Vx
+					// Skip the next instruction if the key in Vx is not pressed
+					if (ch8->keypad[ch8->v[x]] == 0x00) {
+						ch8->pc += 2;
+					}
 					break;
 
 				case 0x009E:
-					printf("Instruction not implemented: %x\n", ch8->opcode);
+					// SKP Vx
+					// Skip the next instruction if the key in Vx is pressed
+					if (ch8->keypad[ch8->v[x]] == 0xFF) {
+						ch8->pc += 2;
+					}
 					break;
 
 				default:
@@ -362,15 +371,21 @@ void execute(chip8 *ch8) {
 					break;
 
 				case 0x0033:
-					printf("Instruction not implemented: %x\n", ch8->opcode);
+					ch8->mem[ch8->i+2] = (ch8->v[x] % 10);
+					ch8->mem[ch8->i+1] = ((ch8->v[x] / 10) % 10);
+					ch8->mem[ch8->i] = (((ch8->v[x] / 10) / 10) % 10);
 					break;
 
 				case 0x0055:
-					printf("Instruction not implemented: %x\n", ch8->opcode);
+					for (int i = 0; i <= x; i++) {
+						ch8->mem[ch8->i + i] = ch8->v[i];
+					}
 					break;
 
 				case 0x0065:
-					printf("Instruction not implemented: %x\n", ch8->opcode);
+					for (int i = 0; i <= x; i++) {
+						ch8->v[i] = ch8->mem[ch8->i + i];
+					}
 					break;
 
 				default:
