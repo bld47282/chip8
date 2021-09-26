@@ -55,6 +55,7 @@ void initialise(chip8 *ch8) {
 	memset(ch8->mem, 0, sizeof(ch8->mem));
 	memset(ch8->stack, 0, sizeof(ch8->stack));
 	memset(ch8->v, 0, sizeof(ch8->v));
+	memset(ch8->keypad, 0, sizeof(ch8->keypad));
 
 	ch8->i = 0;
 	ch8->sp = 0;
@@ -370,7 +371,9 @@ void execute(chip8 *ch8) {
 					break;
 
 				case 0x0033:
-					printf("Instruction not implemented: %x\n", ch8->opcode);
+					ch8->mem[ch8->i+2] = (ch8->v[x] % 10);
+					ch8->mem[ch8->i+1] = ((ch8->v[x] % 10) % 10);
+					ch8->mem[ch8->i] = (((ch8->v[x] % 10) % 10) % 10);
 					break;
 
 				case 0x0055:
