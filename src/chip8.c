@@ -377,11 +377,15 @@ void execute(chip8 *ch8) {
 					break;
 
 				case 0x0055:
-					printf("Instruction not implemented: %x\n", ch8->opcode);
+					for (int i = 0; i <= x; i++) {
+						ch8->mem[ch8->i + i] = ch8->v[i];
+					}
 					break;
 
 				case 0x0065:
-					printf("Instruction not implemented: %x\n", ch8->opcode);
+					for (int i = 0; i <= x; i++) {
+						ch8->v[i] = ch8->mem[ch8->i + i];
+					}
 					break;
 
 				default:
