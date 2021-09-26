@@ -318,7 +318,6 @@ void execute(chip8 *ch8) {
 				case 0x00A1:
 					// SKNP Vx
 					// Skip the next instruction if the key in Vx is not pressed
-					printf("Instruction not implemented: %x\n", ch8->opcode);
 					if (!ch8->keypad[x]) {
 						ch8->pc += 2;
 					}
