@@ -318,7 +318,7 @@ void execute(chip8 *ch8) {
 				case 0x00A1:
 					// SKNP Vx
 					// Skip the next instruction if the key in Vx is not pressed
-					if (!ch8->keypad[x]) {
+					if (ch8->keypad[ch8->v[x]] == 0x00) {
 						ch8->pc += 2;
 					}
 					break;
@@ -326,7 +326,7 @@ void execute(chip8 *ch8) {
 				case 0x009E:
 					// SKP Vx
 					// Skip the next instruction if the key in Vx is pressed
-					if (ch8->keypad[x]) {
+					if (ch8->keypad[ch8->v[x]] == 0xFF) {
 						ch8->pc += 2;
 					}
 					break;

@@ -35,12 +35,12 @@ int main(int argc, char *argv[]) {
 
 	// Main loop: run the CHIP-8 main loop, draw if necessary, check for input, delay
 	while (1) {
-		get_key_state(&ch8, event);
-
 		cycle(&ch8);
 
 		if (ch8.draw_flag == 1)
 			draw(&ch8, handler);
+
+		get_key_state(&ch8, event);
 
 		SDL_Delay(2);
 	}
