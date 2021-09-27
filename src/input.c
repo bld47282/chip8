@@ -54,6 +54,9 @@ void get_key_state(chip8 *ch8, SDL_Event event) {
 					case SDL_SCANCODE_V:
 						ch8->keypad[0xF] = 0xFF;
 						break;
+					case SDL_SCANCODE_SPACE:
+						ch8->pause = 1;
+						break;
 				}
 				break;
 			case SDL_KEYUP:
@@ -105,6 +108,9 @@ void get_key_state(chip8 *ch8, SDL_Event event) {
 						break;
 					case SDL_SCANCODE_V:
 						ch8->keypad[0xF] = 0x00;
+						break;
+					case SDL_SCANCODE_SPACE:
+						ch8->pause = 0;
 						break;
 				}
 				break;
