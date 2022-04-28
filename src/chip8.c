@@ -345,9 +345,22 @@ void execute(chip8 *ch8) {
 					ch8->v[x] = ch8->delay_timer;
 					break;
 
-				case 0x000A:
-					printf("Instruction not implemented: %x\n", ch8->opcode);
+				case 0x000A: {
+					// LD Vx, K
+					// Wait for keypress, set Vx equal to K
+					int key_pressed = 0;
+				       	int key_id;
+					for (key_id = 0; key_id < NUM_KEYS; key_id++) {
+						if (ch8->keypad[key_id] == 0xFF) {
+							key_pressed = 1;
+							ch8->v[x] = key_id;
+						}
+					}
+					if (key_pressed == 0) {
+						ch8->pc -= 2;
+					}
 					break;
+				}
 
 				case 0x0015:
 					// LD DT, Vx
